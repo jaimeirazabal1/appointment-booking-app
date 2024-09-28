@@ -1,27 +1,44 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectBookings } from '../features/bookingsSlice';
+import { selectUser } from '../features/userSlice';
+import { FaUserCircle, FaEnvelope, FaEdit } from 'react-icons/fa';
 
 const Profile = () => {
-  const companies = useSelector(selectBookings).companies; // Asegúrate de que esta sea la ruta correcta
-  const bookings = companies.flatMap(company => company.bookings); // Aplanar los bookings
+  const user = useSelector(selectUser); // Obtener la información del usuario
 
   return (
     <div className="max-w-md mx-auto p-4">
-      <h2 className="text-xl font-bold mb-4">Perfil</h2>
-      
-      <h3 className="text-lg font-semibold mt-6">Historial de Reservas</h3>
-      {bookings.length === 0 ? (
-        <p>No hay reservas realizadas.</p>
-      ) : (
-        <ul className="list-disc pl-5 mt-2">
-          {bookings.map((booking, index) => (
-            <li key={index}>
-              {booking.service} - {booking.date} a las {booking.time}
-            </li>
-          ))}
-        </ul>
-      )}
+      <div className="bg-white shadow-md rounded-lg p-6 text-center">
+        {/* Imagen de perfil o icono */}
+        <div className="flex justify-center mb-4">
+          {user.profileImage ? (
+            <img
+              src={user.profileImage}
+              alt="Imagen de perfil"
+              className="w-24 h-24 object-cover rounded-full border-4 border-blue-500"
+            />
+          ) : (
+            <FaUserCircle size={96} className="text-gray-400" />
+          )}
+        </div>
+
+        {/* Información del usuario */}
+        <h2 className="text-2xl font-bold mb-2 text-gray-800">Perfil de Usuario</h2>
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-gray-600">Información Personal</h3>
+          <p className="text-gray-700 flex items-center justify-center">
+            <FaUserCircle className="mr-2" /> <strong>Nombre:</strong> {user.name}
+          </p>
+          <p className="text-gray-700 flex items-center justify-center">
+            <FaEnvelope className="mr-2" /> <strong>Email:</strong> {user.email}
+          </p>
+        </div>
+
+        {/* Botón de edición */}
+        <button className="w-full bg-blue-500 text-white py-2 rounded-lg shadow-md hover:bg-blue-600 transition duration-300 flex items-center justify-center">
+          <FaEdit className="mr-2" /> Editar Perfil
+        </button>
+      </div>
     </div>
   );
 };
